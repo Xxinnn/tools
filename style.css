@@ -2,7 +2,11 @@ html {
       font-family: open sans;
       font-size: 20px;
 }
-
+#player {
+    position: absolute;
+    left: 242px;
+    top: 172px;
+}
 #container {
     width: 900px;
     height: 618px;
