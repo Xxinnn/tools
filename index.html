@@ -22,7 +22,7 @@
         player = new YT.Player('player', {
             width : '1200',
             height : '618',
-            videoId : '0tSSOzA7hxA',
+            videoId : 'h8DCdxg3hXc',
             //  wmode: transparent  makes HTML goes on top of Flash
             //  fs: disable full screen
             playerVars: {'autoplay': 0, 'wmode': 'transparent', 'fs': 0, 'controls':1, 'rel':0, 'modestbranding':1, 'showinfo':0},
@@ -41,7 +41,7 @@
         var time;
         function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING && !done ) {
-            setTimeout(stopVideo, 536000); 
+            setTimeout(stopVideo, 714000); 
             done=true;
             
             
@@ -119,7 +119,7 @@
         }
         else if(x=='d') {
             $("#container").css("display","none");
-           player.seekTo(537,true);
+           player.seekTo(434,true);
         }
     }
     
