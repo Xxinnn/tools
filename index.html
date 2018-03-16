@@ -41,7 +41,7 @@
         var time;
         function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING && !done ) {
-            setTimeout(stopVideo, 714000); 
+            setTimeout(stopVideo, 434000); 
             done=true;
             
             
@@ -122,18 +122,15 @@
            player.seekTo(434,true);
         }
     }
-    
-    
-             
-
-
       </script>
   </head>
 
   <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <!-- <div>Corrective Hints</div> -->
-    <div id="player"></div>
+    <h2>How does an electric kettle work?</h2>
+      <p style="margin-left: 88px; margin-right: 88px; line-height: 1.5em;">This video demonstrates the mechanism of the electric kettle. You are supposed to answer a question in the middle of the video. Please play the video <strong>CONTINUOUSLY</strong> and don't jump through.</p>
+    <center><div id="player"></div></center>
     <div id="container">
         <h1 class="heading">Do you know...?</h1>
         <div class="question">How does the kettle disconnect when water is boiling?</div>
@@ -175,10 +172,7 @@
         </div>
         <button class="btn seek" id="seek" onclick="gotoVideo()">Review the video</button>
         <button class="btn continue" id="continue" onclick="gotoVideo()">Continue</button>
+        
       </div>   
   </body>
-  
-
-
-
 </html>
