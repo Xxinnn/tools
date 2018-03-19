@@ -7,6 +7,7 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
      <script>
     // 2. This code loads the IFrame Player API code asynchronously.
+      var START_QUIZ_TIME = 434;
       var tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -16,13 +17,11 @@
       //    after the API code downloads.
       var player;
          
-   
-
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             width : '900',
             height : '618',
-            videoId : 'cihQA3UD_zI',
+            videoId : 'h8DCdxg3hXc',
             //  wmode: transparent  makes HTML goes on top of Flash
             //  fs: disable full screen
             playerVars: {'autoplay': 0, 'wmode': 'transparent', 'fs': 0, 'controls':1, 'rel':0, 'modestbranding':1, 'showinfo':0},
@@ -37,45 +36,60 @@
       function onPlayerReady(event) {
         event.target.playVideo();
       }
-        var done = false;
-        var time;
+        var done = false;         
          
-         
-        function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done ) {
-             setTimeout(stopVideo, 434000);
-             //time=player.getCurrentTime();
-            
-
-            done=true;
-            
-            
-//          if( time > 3.000 && time < 4.000) {
-//              stopVideo;
-//              done = true;
+//        function onPlayerStateChange(event) {
+//        if (event.data == YT.PlayerState.PLAYING && !done ) {
+//             setTimeout(stopVideo, 1000);
+//             //time=player.getCurrentTime();
+//            done=true;
+//          }
+//            }
+      function onPlayerStateChange(event) {
+          console.log(event);
+          switch (event.data) {
+            case window['YT'].PlayerState.PLAYING:
+              if (cleanTime() == 0) {
+                console.log('started ' + cleanTime());
+                onPlayerStart(event);
+              } else {
+                console.log('playing ' + cleanTime());
+              }
+              break;
+            case window['YT'].PlayerState.PAUSED:
+              if (player.getDuration() - player.getCurrentTime() != 0) {
+                console.log('paused' + ' @ ' + cleanTime());
+              }
+              break;
+            case window['YT'].PlayerState.ENDED:
+              console.log('ended ');
+              break;
           }
-            
-            }
-    
+        }
+
+        function onPlayerStart(event) {
+          setInterval(() => checkStartQuiz(event), 1000); // check to start quiz every second
+        }
+
+        function checkStartQuiz(event) {
+          if (cleanTime() >= START_QUIZ_TIME) {
+            stopVideo();
+          }
+        }
+        //utility
+        function cleanTime() {
+          return Math.round(player.getCurrentTime());
+        }
          
-      function stopVideo() {
-        player.stopVideo();
-        $("#container").css("display","block");
-      }
-      
-//         var time;
-//         var video= document.getElementById("player");
-//      video.addEventListener("timeupdate",function(){
-//         time = Math.floor(video.currentTime);
-//	},false);
-//    console.log(time);
+        function stopVideo() {
+          player.stopVideo();
+          $("#container").css("display","block");
+        }
          
       document.getElementById('player').style['z-index']=-10;
       document.getElementById('player').style['-webkit-transform']='translateZ(0)';
-         
-         
-      var x;   
-      function selectOption() {
+       
+        function selectOption() {
           var selA = document.getElementById("answerA");
           var selB = document.getElementById("answerB");
           var selC = document.getElementById("answerC");
@@ -146,7 +160,7 @@
               else if(selD.checked == true) {
                   $("#feedbackD").css("display","block");
                   $("#seek").css("display","none");
-                $("#resubmit").css("display","none");
+                  $("#resubmit").css("display","block");
                   $("#continue").css("display","block");
                   x=$("#answerD").val();
               }
@@ -167,7 +181,7 @@
         }
         else if(x=='d') {
             $("#container").css("display","none");
-           player.seekTo(434,true);
+           player.seekTo(435,true);
         }
     }
       </script>
@@ -176,10 +190,9 @@
   <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <!-- <div>Corrective Hints</div> -->
-    <h2>How does an electric kettle work?</h2>
+    <h2>How does the electric kettle work?</h2>
       <p style="margin-left: 88px; margin-right: 88px; line-height: 1.5em;">This video demonstrates the mechanism of the electric kettle. You are supposed to answer a question in the middle of the video. Please play the video <strong>CONTINUOUSLY</strong> and don't jump through.</p>
     <div id="player"></div>
-    
     <div id="container">
         <h1 class="heading">Do you know...?</h1>
         <div class="question">How does the kettle disconnect when water is boiling? (Select One)</div>
@@ -223,10 +236,6 @@
         <button class="btn seek" id="seek" onclick="gotoVideo()">Review the video</button>
         <button class="btn continue" id="continue" onclick="gotoVideo()">Continue</button>
         
-      </div>   
+      </div>  
   </body>
-  
-
-
-
 </html>
